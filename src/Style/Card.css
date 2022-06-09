@@ -1,0 +1,46 @@
+.card {
+  margin: 5px 35px;
+}
+
+.card--inputs {
+  display: flex;
+  justify-content: space-around;
+}
+
+.input-text {
+  box-sizing: border-box;
+  width: 50em;
+  height: 45px;
+  border-radius: 5px;
+  margin: 15px;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 22px;
+}
+
+.input-text:focus {
+  border: 3px solid #672280;
+}
+
+.getImg-btn {
+  display: flex;
+  margin: 20px auto;
+  display: block;
+  width: 75em;
+  height: 40px;
+  background: linear-gradient(90.41deg, #711f8d 1.14%, #a818da 100%);
+  color: #fff;
+  border-radius: 5px;
+  font-size: 20px;
+  line-height: 24pxs;
+}
+
+.memeImg {
+  margin: auto;
+  width: 60em;
+  height: 34em;
+  background: url(../Assets/memeimg.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 5px;
+}
