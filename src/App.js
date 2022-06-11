@@ -1,25 +1,29 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import SquareData from './SquaresData';
+import Square from './Square';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [isBgOnState, setIsBgOnState] = React.useState(SquareData);
+
+  function handleClick(id) {
+    console.log('clicked', id);
+    setIsBgOnState((preVal) =>
+      preVal.map((item) => {
+        return item.id === id ? { ...item, isBgOn: !item.isBgOn } : item;
+      })
+    );
+  }
+
+  const squaresElement = isBgOnState.map((item) => (
+    <Square
+      key={item.id}
+      isBgOn={item.isBgOn}
+      squareClick={() => handleClick(item.id)}
+    />
+  ));
+
+  return <div className="App">{squaresElement}</div>;
 }
 
 export default App;
