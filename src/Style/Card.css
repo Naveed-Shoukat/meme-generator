@@ -39,8 +39,26 @@
   margin: auto;
   width: 60em;
   height: 34em;
-  background: url(../Assets/memeimg.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  border-radius: 5px;
+  background: url('');
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  border-radius: 10px;
+
+  /*backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    objectFit: 'cover',*/
+}
+
+.img-text {
+  font-size: 76px;
+  color: rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-transform: uppercase;
+  /* to obtain text out line we are using -webkit-text-stroke  */
+  -webkit-text-stroke: 2px #fff;
+}
+
+.img-text-botom {
+  margin-top: 300px;
 }
