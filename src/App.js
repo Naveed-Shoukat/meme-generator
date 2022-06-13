@@ -7,7 +7,6 @@ function App() {
   const [isBgOnState, setIsBgOnState] = React.useState(SquareData);
 
   function handleClick(id) {
-    console.log('clicked', id);
     setIsBgOnState((preVal) =>
       preVal.map((item) => {
         return item.id === id ? { ...item, isBgOn: !item.isBgOn } : item;
