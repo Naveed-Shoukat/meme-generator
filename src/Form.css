@@ -1,0 +1,77 @@
+.form {
+  margin: 15px;
+  padding: 15px;
+  background-color: #2e2e2e;
+  color: #ffffff;
+}
+
+.form--fieldset {
+  margin-bottom: 30px;
+  padding: 10px 25px;
+  background-color: #3e3e3e;
+}
+
+.fieldset--legend {
+  font-size: 1.6rem;
+  font-weight: bolder;
+}
+
+.fieldset--legend:hover {
+  cursor: pointer;
+}
+
+.field {
+  align-items: center;
+  display: flex;
+  margin: 5px 25px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.field > input {
+  margin-left: 10px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: 1px solid #ffffff;
+  border-radius: 7px;
+  padding: 5px 10px;
+  background-color: #3e3e3e;
+  color: #ffffff;
+}
+
+.field > input[type='text'] {
+  width: 100%;
+}
+
+.field > input[type='email'] {
+  width: 50%;
+}
+
+.field > input[type='checkbox'] {
+  align-self: center;
+  width: 18px;
+  height: 18px;
+}
+
+.field > select {
+  width: 160px;
+  height: 30px;
+  font-size: 1.3rem;
+}
+
+.field > textarea {
+  margin-left: 20px;
+  font-size: 1.3rem;
+}
+
+input[type='submit'] {
+  width: 100%;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.2rem;
+  padding: 5px;
+  text-transform: uppercase;
+  background-color: rgb(1, 78, 78);
+  color: #ffffff;
+}
