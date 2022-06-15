@@ -1,7 +1,7 @@
 import React from 'react';
 import './Form.css';
 
-export default function Form() {
+export default function Form(props) {
   const [userData, setUserData] = React.useState({
     surname: '',
     name: '',
@@ -47,9 +47,16 @@ export default function Form() {
     });
   }
 
+  const fieldClassCSS = props.darkMode ? 'field dark' : 'field';
+
   return (
     <div>
-      <form className="form" action="/test" method="post" autoComplete="off">
+      <form
+        className={props.darkMode ? 'form dark' : 'form'}
+        action="/test"
+        method="post"
+        autoComplete="off"
+      >
         <fieldset className="form--fieldset">
           <legend
             className="fieldset--legend"
@@ -59,7 +66,7 @@ export default function Form() {
           </legend>
           {isShown.information && (
             <>
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="surname">Surname:</label>
                 <input
                   type="text"
@@ -70,7 +77,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="name">Name:</label>
                 <input
                   type="text"
@@ -81,7 +88,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="age">How old are You?</label>
                 <input
                   type="number"
@@ -92,7 +99,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="dob">Full date of birth:</label>
                 <input
                   type="date"
@@ -103,7 +110,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="termsOfAgrement">
                   I accept the term of the agrement
                 </label>
@@ -129,7 +136,7 @@ export default function Form() {
 
           {isShown.registration && (
             <>
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="email">E-mail:</label>
                 <input
                   type="email"
@@ -140,7 +147,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="password">Password:</label>
                 <input
                   type="password"
@@ -151,7 +158,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="confirmPassword">Confirm Password:</label>
                 <input
                   type="password"
@@ -175,7 +182,7 @@ export default function Form() {
 
           {isShown.facts && (
             <>
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="loveCats">
                   Do you love cats?
                   <label htmlFor="loveCatsYes">
@@ -203,7 +210,7 @@ export default function Form() {
                 </label>
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="favColor">What is your favorite color?</label>
                 <input
                   type="color"
@@ -214,7 +221,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="timeToBed">What time do you go to bed?</label>
                 <input
                   type="time"
@@ -225,7 +232,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="favCarBrands">
                   What are your favorite brand of cars?
                 </label>
@@ -245,7 +252,7 @@ export default function Form() {
                 </select>
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="rating">How do you rate our work?</label>
                 <input
                   type="range"
@@ -270,7 +277,7 @@ export default function Form() {
           </legend>
           {isShown.additionalInfo && (
             <>
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="comments">Comments</label>
                 <textarea
                   name="comments"
@@ -282,7 +289,7 @@ export default function Form() {
                 />
               </div>
 
-              <div className="field">
+              <div className={fieldClassCSS}>
                 <label htmlFor="recommend">Would you recommend us?</label>
                 <select
                   id="recommend"
