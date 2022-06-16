@@ -1,0 +1,93 @@
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 150px 200px;
+  background-color: #f5f5f5;
+  /* max-height: 100vh; */
+  border-radius: 25px;
+  padding: 25px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* height: 90%; */
+}
+
+main > h1 {
+  margin: 25px;
+  font-family: 'Karla';
+  font-style: normal;
+  font-weight: 900;
+  font-size: 46px;
+  letter-spacing: 0.5em;
+  color: #2b283a;
+  text-transform: uppercase;
+}
+
+main > p {
+  margin: 0;
+  padding: 0 100px 50px 100px;
+  text-align: center;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  letter-spacing: 0.04em;
+  color: #4a4e74;
+}
+
+.dice-container {
+  display: grid;
+  grid-template: repeat(2, auto) / repeat(5, auto);
+  /* The above is a short-hand of specifing rows/column in one line */
+  /* grid-template-columns: repeat(5, auto); */
+  /* grid-template-rows: auto auto; */
+  gap: 25px;
+}
+
+.dice-face {
+  width: 100px;
+  height: 100px;
+  color: #2b283a;
+  background-color: #ffffff;
+  box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  font-family: 'Karla';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 100px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dice-face-freez {
+  background-color: #59e391;
+}
+
+.roll-btn {
+  margin-top: 50px;
+  height: 50px;
+  width: 200px;
+  background: #5035ff;
+  box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Karla';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  color: #ffffff;
+}
+
+.roll-btn:focus {
+  outline: none;
+}
+
+.roll-btn:active {
+  box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
