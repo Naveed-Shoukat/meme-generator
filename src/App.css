@@ -17,26 +17,24 @@ main {
   /* height: 90%; */
 }
 
-main > h1 {
-  margin: 25px;
+.text-container {
   font-family: 'Karla';
   font-style: normal;
-  font-weight: 900;
-  font-size: 46px;
   letter-spacing: 0.5em;
+  text-align: center;
+  font-weight: 900;
+}
+
+.text-container > h1 {
+  font-size: 46px;
   color: #2b283a;
   text-transform: uppercase;
 }
 
-main > p {
-  margin: 0;
-  padding: 0 100px 50px 100px;
-  text-align: center;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 700;
+.text-container > p {
+  padding: 0 100px;
   font-size: 36px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: #4a4e74;
 }
 
@@ -69,8 +67,25 @@ main > p {
   background-color: #59e391;
 }
 
+.dice-inner {
+  /* display: flex; */
+  width: 80px;
+  height: 80px;
+  /* margin: 10px; */
+  border: 5px double black;
+  border-radius: 5px;
+}
+
+.lower-container {
+  margin-top: 25px;
+  display: grid;
+  grid-template: 1fr / 2fr 1fr 2fr;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  gap: 25px;
+}
 .roll-btn {
-  margin-top: 50px;
   height: 50px;
   width: 200px;
   background: #5035ff;
