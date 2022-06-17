@@ -1,9 +1,24 @@
 import React from 'react';
 import './App.css';
 import Dia from './Components/Dia';
+import Confetti from 'react-confetti';
 
 function App() {
   const [dice, setDice] = React.useState(() => getInitialDiceValues());
+  const [tenzies, setTenzies] = React.useState(() => false);
+
+  React.useEffect(() => {
+    const firstDiceValue = dice[0].value;
+    const freezDices = dice.every((dia) => dia.isFreez);
+    const matchedValuesDices = dice.filter(
+      (dia) => dia.value === firstDiceValue
+    );
+
+    if (freezDices && matchedValuesDices) {
+      setTenzies(true);
+    }
+    console.log(tenzies);
+  }, [dice, tenzies]);
 
   function getDiceRollValue() {
     return Math.ceil(Math.random() * 6);
@@ -28,21 +43,19 @@ function App() {
         return item.id === diceId ? { ...item, isFreez: !item.isFreez } : item;
       });
     });
-
-    console.log(checkGameWin() ? 'Pending' : 'Not Pending');
-  }
-
-  function checkGameWin() {
-    const remainingUnFreezDice = dice.filter((item) => item.isFreez === false);
-    return remainingUnFreezDice.length;
   }
 
   function handleRoolBtnClick() {
-    setDice((prevDiceState) => {
-      return prevDiceState.map((item) => {
-        return item.isFreez ? item : { ...item, value: getDiceRollValue() };
+    if (tenzies) {
+      setDice(getInitialDiceValues());
+      setTenzies(false);
+    } else {
+      setDice((prevDiceState) => {
+        return prevDiceState.map((item) => {
+          return item.isFreez ? item : { ...item, value: getDiceRollValue() };
+        });
       });
-    });
+    }
   }
 
   const diaElements = dice.map((item) => (
@@ -57,6 +70,7 @@ function App() {
   return (
     <div className="App">
       <main>
+        {tenzies && <Confetti />}
         <h1>Tenzies</h1>
         <p>
           Roll until all dice are the same. Click each die to freeze it at its
@@ -64,7 +78,7 @@ function App() {
         </p>
         <div className="dice-container">{diaElements}</div>
         <button className="roll-btn" onClick={handleRoolBtnClick}>
-          Roll
+          {tenzies ? 'Rest Game' : 'Roll'}
         </button>
       </main>
     </div>
