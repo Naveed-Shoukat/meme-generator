@@ -3,6 +3,15 @@ import './App.css';
 import Dia from './Components/Dia';
 import Confetti from 'react-confetti';
 
+/*
+For an extra credit work do following 
+1. Add DOTs instead of number
+2. Track the number of rools
+3. Track the time took to Win the game
+4. Save Best Time or Minimum rools into local storage
+5. Add levels based on Max number of rools or Time based
+*/
+
 function App() {
   const [dice, setDice] = React.useState(() => getInitialDiceValues());
   const [tenzies, setTenzies] = React.useState(() => false);
