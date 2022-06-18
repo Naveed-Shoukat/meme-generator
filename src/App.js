@@ -2,71 +2,75 @@ import React from 'react';
 import './App.css';
 import Dia from './Components/Dia';
 import Confetti from 'react-confetti';
-// import GameTimer from './Components/GameTimer';
 
 /*
 For an extra credit work do following 
-1. Add DOTs instead of number = DONE
-2. Track the number of rools = DONE
-3. Track the time took to Win the game
-4. Save Best Time or Minimum rools into local storage
-5. Add levels based on Max number of rools or Time based
-game = {
-  dice,
-  tenzies,
-  numRools,
-  Time,
-}
+-Save Best Time or Minimum rools into local storage
+
 */
 
 function App() {
-  const [isTimeActive, setIsTimeActive] = React.useState(false);
-  const [time, setTime] = React.useState(0);
-
-  const [dice, setDice] = React.useState(() => {
-    const localSavedGame = localStorage.getItem('tenziesGameData');
-    return JSON.parse(localSavedGame).game || getInitialDiceValues();
+  const [gameControlers, setGameControlers] = React.useState(() => {
+    return setInitialState();
   });
 
-  const [tenzies, setTenzies] = React.useState(() => false);
+  function setInitialState() {
+    const localSavedGameObj = JSON.parse(
+      localStorage.getItem('tenziesGameData')
+    );
 
-  const [roolCount, setRoolCount] = React.useState(() => {
-    const localSavedGame = localStorage.getItem('tenziesGameData');
-    return JSON.parse(localSavedGame).totalRollCount || 0;
-  });
+    const savedValues = {
+      isTenzies: localSavedGameObj.isTenzies || '',
+      isTimeActive: localSavedGameObj.isTimeActive || false,
+      timeInSeconds: localSavedGameObj.timeInSeconds || 0,
+      allDiceStates: localSavedGameObj.allDiceStates || getInitialDiceValues(),
+      diceRoolCount: localSavedGameObj.diceRoolCount || 0,
+    };
+
+    return savedValues;
+  }
 
   React.useEffect(() => {
-    const firstDiceValue = dice[0].value;
-    const freezDices = dice.every((dia) => dia.isFreez);
-    const matchedValuesDices = dice.filter(
-      (dia) => dia.value === firstDiceValue
+    const firstDiceValue = gameControlers.allDiceStates[0].value;
+    const freezDices = gameControlers.allDiceStates.every(
+      (dice) => dice.isFreez
+    );
+    const matchedValuesDices = gameControlers.allDiceStates.every(
+      (dice) => dice.value === firstDiceValue
     );
 
     if (freezDices && matchedValuesDices) {
-      setTenzies(true);
-      setIsTimeActive(false);
+      setGameControlers((prevValues) => {
+        return {
+          ...prevValues,
+          isTenzies: true,
+          isTimeActive: false,
+        };
+      });
     }
 
-    localStorage.setItem(
-      'tenziesGameData',
-      JSON.stringify({ game: dice, totalRollCount: roolCount })
-    );
+    localStorage.setItem('tenziesGameData', JSON.stringify(gameControlers));
 
     // Timer Function details
-    let interval = null;
-    if (isTimeActive) {
+    let interval;
+    if (gameControlers.isTimeActive) {
       interval = setInterval(() => {
-        setTime((time) => time + 10);
-      }, 10);
+        setGameControlers((prevValues) => {
+          return {
+            ...prevValues,
+            timeInSeconds: prevValues.timeInSeconds + 1,
+          };
+        });
+      }, 1000);
     } else {
       clearInterval(interval);
     }
     return () => {
       clearInterval(interval);
     };
-  }, [dice, tenzies, roolCount, isTimeActive]);
+  }, [gameControlers]);
 
-  function getDiceRollValue() {
+  function getDiceRandumValue() {
     return Math.ceil(Math.random() * 6);
   }
 
@@ -75,7 +79,7 @@ function App() {
     for (let i = 0; i < 10; i++) {
       const diceState = {
         id: i,
-        value: getDiceRollValue(),
+        value: getDiceRandumValue(),
         isFreez: false,
       };
       diceValues.push(diceState);
@@ -84,49 +88,67 @@ function App() {
   }
 
   function handleDiceClick(diceId) {
-    setDice((prevDiceState) => {
-      return prevDiceState.map((item) => {
-        return item.id === diceId ? { ...item, isFreez: !item.isFreez } : item;
-      });
-    });
-  }
-
-  function handleRoolBtnClick() {
-    if (tenzies) {
-      setDice(getInitialDiceValues());
-      setTenzies('');
-      setRoolCount(0);
-      setIsTimeActive(false);
-      setTime(0);
-    } else {
-      setDice((prevDiceState) => {
-        return prevDiceState.map((item) => {
-          return item.isFreez ? item : { ...item, value: getDiceRollValue() };
+    if (gameControlers.isTimeActive) {
+      setGameControlers((prevValues) => {
+        const newDiceState = prevValues.allDiceStates.map((dice) => {
+          return dice.id === diceId
+            ? { ...dice, isFreez: !dice.isFreez }
+            : dice;
         });
+        return {
+          ...prevValues,
+          allDiceStates: newDiceState,
+        };
       });
-      setRoolCount((prevCount) => {
-        return prevCount + 1;
-      });
-      setIsTimeActive(true);
     }
   }
 
-  const diaElements = dice.map((item) => (
+  function handleRoolBtnClick() {
+    if (gameControlers.isTenzies) {
+      setGameControlers((prevValues) => {
+        return {
+          isTenzies: '',
+          isTimeActive: false,
+          timeInSeconds: 0,
+          allDiceStates: getInitialDiceValues(),
+          diceRoolCount: 0,
+        };
+      });
+    } else {
+      setGameControlers((prevValues) => {
+        const newDiceState = prevValues.allDiceStates.map((dice) => {
+          return dice.isFreez ? dice : { ...dice, value: getDiceRandumValue() };
+        });
+        return {
+          ...prevValues,
+          allDiceStates: newDiceState,
+          diceRoolCount: prevValues.diceRoolCount + 1,
+          isTimeActive: true,
+          isTenzies: false,
+        };
+      });
+    }
+  }
+  const diaElements = gameControlers.allDiceStates.map((dice) => (
     <Dia
-      key={item.id}
-      diceValue={item.value}
-      diceFreez={item.isFreez}
-      onDiceClick={() => handleDiceClick(item.id)}
+      key={dice.id}
+      diceValue={dice.value}
+      diceFreez={dice.isFreez}
+      onDiceClick={() => handleDiceClick(dice.id)}
     />
   ));
 
   const rollBtnText =
-    tenzies === '' ? 'Start Game' : tenzies ? 'Rest Game' : 'Roll';
+    gameControlers.isTenzies === ''
+      ? 'Start Game'
+      : gameControlers.isTenzies
+      ? 'Rest Game'
+      : 'Roll';
 
   return (
     <div className="App">
       <main>
-        {tenzies && <Confetti />}
+        {gameControlers.isTenzies && <Confetti />}
         <div className="text-container">
           <h1>Tenzies</h1>
           <p>
@@ -140,18 +162,26 @@ function App() {
             {' '}
             Time&nbsp;
             <span>H:</span>
-            <span>{time.hours}&nbsp;</span>
+            <span>
+              {('0' + Math.floor(gameControlers.timeInSeconds / 60 / 60)).slice(
+                -2
+              )}
+              &nbsp;
+            </span>
             <span>M:</span>
             <span>
-              {('0' + Math.floor((time / 60000) % 60)).slice(-2)}&nbsp;
+              {('0' + Math.floor(gameControlers.timeInSeconds / 60)).slice(-2)}
+              &nbsp;
             </span>
             <span>S:</span>
-            <span>{('0' + Math.floor((time / 1000) % 60)).slice(-2)}</span>
+            <span>
+              {('0' + Math.floor(gameControlers.timeInSeconds % 60)).slice(-2)}
+            </span>
           </div>
           <button className="roll-btn" onClick={handleRoolBtnClick}>
             {rollBtnText}
           </button>
-          <h1>Rool Count:&nbsp;{roolCount}</h1>
+          <h1>Rool Count:&nbsp;{gameControlers.diceRoolCount}</h1>
         </div>
       </main>
     </div>
