@@ -20,14 +20,23 @@ game = {
 
 function App() {
   const [dice, setDice] = React.useState(() => {
-    const localDiceData = localStorage.getItem('tenziesGameData');
-    const saveGameState = JSON.parse(localDiceData).game;
-
-    return saveGameState || getInitialDiceValues();
+    const localSavedGame = localStorage.getItem('tenziesGameData');
+    return JSON.parse(localSavedGame).game || getInitialDiceValues();
   });
 
   const [tenzies, setTenzies] = React.useState(() => false);
-  const [roolCount, setRoolCount] = React.useState(() => 0);
+
+  const [roolCount, setRoolCount] = React.useState(() => {
+    const localSavedGame = localStorage.getItem('tenziesGameData');
+    return JSON.parse(localSavedGame).totalRollCount || 0;
+  });
+
+  const [displayTime, setDisplayTime] = React.useState(() => {
+    return {
+      minutes: '00',
+      seconds: '00',
+    };
+  });
 
   React.useEffect(() => {
     const firstDiceValue = dice[0].value;
@@ -42,9 +51,9 @@ function App() {
 
     localStorage.setItem(
       'tenziesGameData',
-      JSON.stringify({ game: dice, win: tenzies })
+      JSON.stringify({ game: dice, totalRollCount: roolCount })
     );
-  }, [dice, tenzies]);
+  }, [dice, tenzies, roolCount]);
 
   function getDiceRollValue() {
     return Math.ceil(Math.random() * 6);
@@ -76,6 +85,10 @@ function App() {
       setDice(getInitialDiceValues());
       setTenzies(false);
       setRoolCount(0);
+      setDisplayTime({
+        minutes: '00',
+        seconds: '00',
+      });
     } else {
       setDice((prevDiceState) => {
         return prevDiceState.map((item) => {
@@ -97,6 +110,32 @@ function App() {
     />
   ));
 
+  // setDisplayTime(() => {
+  // // let minutesSpan = document.getElementById('minutes');
+  // // let secondsSpan = document.getElementById('seconds');
+  // let totalTimeUsed = 0;
+
+  //   setInterval(setDisplayTime, 1000);
+
+  //   function setDisplayTime() {
+  //     totalTimeUsed++;
+  //     secondsSpan.innerHTML = timetoString(totalTimeUsed % 60);
+  //     minutesSpan.innerHTML = timetoString(parseInt(totalTimeUsed / 60));
+  //   }
+
+  //   function timetoString(timeInSeconds) {
+  //     let timeInString = '' + timeInSeconds;
+  //     if (timeInString.length < 2) {
+  //       return '0' + timeInString;
+  //     } else {
+  //       return timeInString;
+  //     }
+  //   }
+  // });
+
+  const rollBtnText =
+    tenzies === '' ? 'Start Game' : tenzies ? 'Rest Game' : 'Roll';
+
   return (
     <div className="App">
       <main>
@@ -110,9 +149,12 @@ function App() {
         </div>
         <div className="dice-container">{diaElements}</div>
         <div className="lower-container">
-          <h1>Timer: 00:00:00</h1>
+          <h1>
+            Timer: <span id="minutes">{displayTime.minutes}</span>:
+            <span id="seconds">{displayTime.seconds}</span>{' '}
+          </h1>
           <button className="roll-btn" onClick={handleRoolBtnClick}>
-            {tenzies ? 'Rest Game' : 'Roll'}
+            {rollBtnText}
           </button>
           <h1>Rool Count:&nbsp;{roolCount}</h1>
         </div>
