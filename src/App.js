@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Dia from './Components/Dia';
 import Confetti from 'react-confetti';
+// import GameTimer from './Components/GameTimer';
 
 /*
 For an extra credit work do following 
@@ -19,6 +20,9 @@ game = {
 */
 
 function App() {
+  const [isTimeActive, setIsTimeActive] = React.useState(false);
+  const [time, setTime] = React.useState(0);
+
   const [dice, setDice] = React.useState(() => {
     const localSavedGame = localStorage.getItem('tenziesGameData');
     return JSON.parse(localSavedGame).game || getInitialDiceValues();
@@ -31,13 +35,6 @@ function App() {
     return JSON.parse(localSavedGame).totalRollCount || 0;
   });
 
-  const [displayTime, setDisplayTime] = React.useState(() => {
-    return {
-      minutes: '00',
-      seconds: '00',
-    };
-  });
-
   React.useEffect(() => {
     const firstDiceValue = dice[0].value;
     const freezDices = dice.every((dia) => dia.isFreez);
@@ -47,13 +44,27 @@ function App() {
 
     if (freezDices && matchedValuesDices) {
       setTenzies(true);
+      setIsTimeActive(false);
     }
 
     localStorage.setItem(
       'tenziesGameData',
       JSON.stringify({ game: dice, totalRollCount: roolCount })
     );
-  }, [dice, tenzies, roolCount]);
+
+    // Timer Function details
+    let interval = null;
+    if (isTimeActive) {
+      interval = setInterval(() => {
+        setTime((time) => time + 10);
+      }, 10);
+    } else {
+      clearInterval(interval);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [dice, tenzies, roolCount, isTimeActive]);
 
   function getDiceRollValue() {
     return Math.ceil(Math.random() * 6);
@@ -83,12 +94,10 @@ function App() {
   function handleRoolBtnClick() {
     if (tenzies) {
       setDice(getInitialDiceValues());
-      setTenzies(false);
+      setTenzies('');
       setRoolCount(0);
-      setDisplayTime({
-        minutes: '00',
-        seconds: '00',
-      });
+      setIsTimeActive(false);
+      setTime(0);
     } else {
       setDice((prevDiceState) => {
         return prevDiceState.map((item) => {
@@ -98,6 +107,7 @@ function App() {
       setRoolCount((prevCount) => {
         return prevCount + 1;
       });
+      setIsTimeActive(true);
     }
   }
 
@@ -109,29 +119,6 @@ function App() {
       onDiceClick={() => handleDiceClick(item.id)}
     />
   ));
-
-  // setDisplayTime(() => {
-  // // let minutesSpan = document.getElementById('minutes');
-  // // let secondsSpan = document.getElementById('seconds');
-  // let totalTimeUsed = 0;
-
-  //   setInterval(setDisplayTime, 1000);
-
-  //   function setDisplayTime() {
-  //     totalTimeUsed++;
-  //     secondsSpan.innerHTML = timetoString(totalTimeUsed % 60);
-  //     minutesSpan.innerHTML = timetoString(parseInt(totalTimeUsed / 60));
-  //   }
-
-  //   function timetoString(timeInSeconds) {
-  //     let timeInString = '' + timeInSeconds;
-  //     if (timeInString.length < 2) {
-  //       return '0' + timeInString;
-  //     } else {
-  //       return timeInString;
-  //     }
-  //   }
-  // });
 
   const rollBtnText =
     tenzies === '' ? 'Start Game' : tenzies ? 'Rest Game' : 'Roll';
@@ -149,10 +136,18 @@ function App() {
         </div>
         <div className="dice-container">{diaElements}</div>
         <div className="lower-container">
-          <h1>
-            Timer: <span id="minutes">{displayTime.minutes}</span>:
-            <span id="seconds">{displayTime.seconds}</span>{' '}
-          </h1>
+          <div style={{ fontSize: '22px', fontWeight: 'bolder' }}>
+            {' '}
+            Time&nbsp;
+            <span>H:</span>
+            <span>{time.hours}&nbsp;</span>
+            <span>M:</span>
+            <span>
+              {('0' + Math.floor((time / 60000) % 60)).slice(-2)}&nbsp;
+            </span>
+            <span>S:</span>
+            <span>{('0' + Math.floor((time / 1000) % 60)).slice(-2)}</span>
+          </div>
           <button className="roll-btn" onClick={handleRoolBtnClick}>
             {rollBtnText}
           </button>
