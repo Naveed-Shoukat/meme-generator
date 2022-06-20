@@ -3,10 +3,18 @@
   justify-content: center;
   align-items: center;
   margin: 150px 200px;
-  background-color: #f5f5f5;
+
   /* max-height: 100vh; */
   border-radius: 25px;
   padding: 25px;
+
+  background: url('./Components/img1.svg'), url('./Components/img2.svg');
+  background-repeat: no-repeat, no-repeat;
+  background-position: right top, bottom left;
+  background-clip: border-box;
+  background-position-x: 108%, -5%;
+  background-position-y: -8%, 115%;
+  background-color: #f5f5f5;
 }
 
 main {
